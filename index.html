@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SafeSphere - Smart Tourist Safety Monitoring</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome/Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      
+      <!-- LOGIN VIEW -->
+      <div id="view-login" class="auth-container view-screen">
+        <div class="glass-panel auth-card" id="login-card">
+          <div class="auth-header">
+            <h1>SafeSphere</h1>
+            <p>Smart Tourist Safety Monitoring</p>
+          </div>
+          <form id="login-form">
+            <div class="form-group login-field">
+              <label>Email / Username</label>
+              <input type="text" class="form-control" placeholder="Enter your email" value="tourist@safesphere.com" required>
+            </div>
+            <div class="form-group login-field">
+              <label>Password</label>
+              <input type="password" class="form-control" placeholder="Enter password" value="password123" required>
+            </div>
+            <button type="submit" class="btn btn-primary login-btn" style="width: 100%; margin-top: 10px;">
+              Login <i class="fa-solid fa-arrow-right"></i>
+            </button>
+            <div style="text-align: center; margin-top: 20px;" class="login-field">
+              <button type="button" class="btn btn-text" id="go-register">New user? Register</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- REGISTER VIEW -->
+      <div id="view-register" class="auth-container view-screen hidden">
+        <div class="glass-panel auth-card register-card" id="register-card">
+          <div class="auth-header">
+            <h1>Create Account</h1>
+            <p>Join SafeSphere for a secure journey</p>
+          </div>
+          <form id="register-form">
+            <div class="register-grid">
+              <div class="form-group reg-field">
+                <label>Full Name</label>
+                <input type="text" class="form-control" placeholder="John Doe" required>
+              </div>
+              <div class="form-group reg-field">
+                <label>Nationality</label>
+                <input type="text" class="form-control" placeholder="e.g. Canada" required>
+              </div>
+              <div class="form-group reg-field full-width">
+                <label>Email</label>
+                <input type="email" class="form-control" placeholder="john@example.com" required>
+              </div>
+              <div class="form-group reg-field">
+                <label>Phone Number</label>
+                <input type="tel" class="form-control" placeholder="+1 234 567 8900" required>
+              </div>
+              <div class="form-group reg-field">
+                <label>Upload ID (Digital Passport)</label>
+                <input type="file" class="form-control" style="padding: 9px;" required>
+              </div>
+              <div class="form-group reg-field">
+                <label>Password</label>
+                <input type="password" class="form-control" required>
+              </div>
+              <div class="form-group reg-field">
+                <label>Confirm Password</label>
+                <input type="password" class="form-control" required>
+              </div>
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+              <button type="button" class="btn btn-text reg-btn" id="go-login" style="flex: 1;">Back to Login</button>
+              <button type="submit" class="btn btn-primary reg-btn" style="flex: 1;">Register</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- DASHBOARD VIEW -->
+      <div id="view-dashboard" class="dashboard-layout view-screen hidden">
+        <!-- Sidebar -->
+        <div class="sidebar">
+          <div class="nav-item active" title="Dashboard" id="nav-dash" data-view="map">
+            <i class="fa-solid fa-map-location-dot"></i>
+          </div>
+          <div class="nav-item" title="Alerts" id="nav-alerts">
+            <i class="fa-solid fa-bell"></i>
+          </div>
+          <div class="nav-item" title="Profile" id="nav-profile" data-view="profile">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <div class="nav-item nav-item-bottom" title="Logout" id="nav-logout">
+            <i class="fa-solid fa-sign-out-alt"></i>
+          </div>
+        </div>
+
+        <!-- Main Workspace (Map or Profile) -->
+        <div class="main-content" id="main-content">
+          <!-- MAP VIEW -->
+          <div class="map-section" id="map-view">
+            <div class="map-grid"></div>
+            <!-- Zones -->
+            <div class="zone safe-zone" id="safe-zone"></div>
+            <div class="zone danger-zone" id="danger-zone"></div>
+            <!-- User Location -->
+            <div class="location-pulse map-element" id="user-pulse"></div>
+            <div class="location-marker map-element" id="user-location"></div>
+          </div>
+
+          <!-- PROFILE VIEW -->
+          <div class="profile-view" id="profile-view">
+            <div class="profile-header">
+              <h2 style="font-size: 2rem;">User Profile</h2>
+              <p style="color: var(--text-secondary);">Manage your identity and details</p>
+            </div>
+            <div class="glass-panel profile-card" id="profile-card-anim">
+              <div style="display: flex; align-items: center; gap: 20px;">
+                <div class="profile-avatar">JD</div>
+                <div>
+                  <h3 style="font-size: 1.5rem;">John Doe</h3>
+                  <p style="color: var(--text-secondary);">Canadian Citizen</p>
+                </div>
+              </div>
+              <hr style="border: none; border-top: 1px solid var(--glass-border); margin: 10px 0;">
+              <div class="stats-grid" style="gap: 20px;">
+                <div>
+                  <label style="color: var(--text-secondary); font-size: 0.85rem;">Email</label>
+                  <p>tourist@safesphere.com</p>
+                </div>
+                <div>
+                  <label style="color: var(--text-secondary); font-size: 0.85rem;">Phone</label>
+                  <p>+1 234 567 8900</p>
+                </div>
+                <div>
+                  <label style="color: var(--text-secondary); font-size: 0.85rem;">Verified Status</label>
+                  <p style="color: var(--accent-safe);"><i class="fa-solid fa-circle-check"></i> Blockchain Verified</p>
+                </div>
+                <div>
+                  <label style="color: var(--text-secondary); font-size: 0.85rem;">Emergency Contact</label>
+                  <p>Jane Doe (+1 987 654 3210)</p>
+                </div>
+              </div>
+              <button class="btn btn-primary" style="width: fit-content;">Edit Profile</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Panel (Visible when map is active) -->
+        <div class="right-panel" id="right-panel">
+          
+          <!-- AI Safety Score -->
+          <div class="glass-panel panel-card ai-panel">
+            <div class="panel-header">
+              <i class="fa-solid fa-robot"></i> AI Safety Assessment
+            </div>
+            <div class="safety-score">
+              <span style="font-size: 1.1rem;">Current Status</span>
+              <div class="score-badge status-safe" id="safety-badge">SAFE</div>
+            </div>
+            <div class="stats-grid">
+              <div class="stat-box">
+                <div class="stat-label">Crowd Density</div>
+                <div class="stat-value" id="crowd-val">Low (12%)</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-label">Police Proximity</div>
+                <div class="stat-value" id="police-val">1.2 km</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Blockchain ID -->
+          <div class="id-card blockchain-panel">
+            <i class="fa-solid fa-certificate id-verified"></i>
+            <div style="font-size: 0.85rem; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 8px;">
+              Digital Identity
+            </div>
+            <div style="font-size: 1.2rem; font-weight: 600;">John Doe</div>
+            <div class="id-number">ID: 0x8F9...3B2A</div>
+          </div>
+
+          <!-- Alerts -->
+          <div class="alerts-section" style="flex: 1;">
+            <div class="panel-header">
+              <i class="fa-solid fa-satellite-dish"></i> Recent Activity
+            </div>
+            <div class="alert-list" id="alert-list">
+              <div class="alert-item alert-safe alert-anim">
+                <i class="fa-solid fa-check-circle" style="color: var(--accent-safe);"></i>
+                <div class="alert-content">
+                  <p>Identity verified</p>
+                  <span>10 mins ago</span>
+                </div>
+              </div>
+              <div class="alert-item alert-info alert-anim">
+                <i class="fa-solid fa-location-dot" style="color: var(--accent-blue);"></i>
+                <div class="alert-content">
+                  <p>Entered tourist safe zone</p>
+                  <span>2 mins ago</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SOS Button -->
+          <div class="sos-container">
+            <button class="btn-sos" id="sos-btn">
+              <i class="fa-solid fa-triangle-exclamation"></i> SOS EMERGENCY
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
