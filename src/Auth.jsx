@@ -6,6 +6,32 @@ import {
   Users, Plus, Trash2, CheckCircle2, ChevronRight, Fingerprint, Copy
 } from 'lucide-react';
 
+const Field = ({ label, icon: Icon, type = "text", placeholder, value, onChange, options }) => (
+  <div className="space-y-1.5 flex-1 min-w-[200px]">
+    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">{label}</label>
+    <div className="relative group">
+      {Icon && <Icon className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 transition-colors" size={14} />}
+      {options ? (
+        <select 
+          value={value} 
+          onChange={onChange}
+          className="w-full bg-slate-900/40 border border-slate-700/50 rounded-xl py-2.5 px-4 pl-9 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all outline-none appearance-none"
+        >
+          {options.map(opt => <option key={opt}>{opt}</option>)}
+        </select>
+      ) : (
+        <input 
+          type={type}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          className="w-full bg-slate-900/40 border border-slate-700/50 rounded-xl py-2.5 px-4 pl-9 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all outline-none placeholder:text-slate-600"
+        />
+      )}
+    </div>
+  </div>
+);
+
 export default function Auth({ onLogin }) {
   const [view, setView] = useState('login'); // 'login' | 'register' | 'qrcodes'
   const [regData, setRegData] = useState(null);
@@ -76,13 +102,13 @@ export default function Auth({ onLogin }) {
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const loginId = e.target.loginId.value;
+    const blockchainId = e.target.blockchainId.value;
     
     try {
       const response = await fetch('http://localhost:5000/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ blockchainId: loginId })
+        body: JSON.stringify({ blockchainId })
       });
       const data = await response.json();
       if (data.success) {
@@ -122,32 +148,6 @@ export default function Auth({ onLogin }) {
     }
   };
 
-  const Field = ({ label, icon: Icon, type = "text", placeholder, value, onChange, options }) => (
-    <div className="space-y-1.5 flex-1 min-w-[200px]">
-      <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">{label}</label>
-      <div className="relative group">
-        {Icon && <Icon className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 transition-colors" size={14} />}
-        {options ? (
-          <select 
-            value={value} 
-            onChange={onChange}
-            className="w-full bg-slate-900/40 border border-slate-700/50 rounded-xl py-2.5 px-4 pl-9 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all outline-none appearance-none"
-          >
-            {options.map(opt => <option key={opt}>{opt}</option>)}
-          </select>
-        ) : (
-          <input 
-            type={type}
-            value={value}
-            onChange={onChange}
-            placeholder={placeholder}
-            className="w-full bg-slate-900/40 border border-slate-700/50 rounded-xl py-2.5 px-4 pl-9 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all outline-none placeholder:text-slate-600"
-          />
-        )}
-      </div>
-    </div>
-  );
-
   return (
     <div className="bg-[#0b0f1a] min-h-screen text-slate-200 selection:bg-blue-500/30 overflow-x-hidden" ref={containerRef}>
       {/* Abstract Background pattern */}
@@ -171,13 +171,13 @@ export default function Auth({ onLogin }) {
               <div className="bg-slate-900/40 backdrop-blur-2xl border border-white/5 rounded-[32px] p-8 shadow-2xl">
                 <form onSubmit={handleLogin} className="space-y-6">
                   <div className="space-y-4">
-                    <Field 
-                      label="Blockchain Public ID" 
-                      icon={Lock} 
-                      name="loginId" 
-                      placeholder="0x..." 
-                      required 
-                    />
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">Blockchain Public ID</label>
+                      <div className="relative group">
+                        <Fingerprint className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 transition-colors" size={14} />
+                        <input name="blockchainId" type="text" required placeholder="0x..." className="w-full bg-slate-900/40 border border-slate-700/50 rounded-xl py-2.5 px-4 pl-9 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all outline-none" />
+                      </div>
+                    </div>
                   </div>
                   <button 
                     disabled={loading} 

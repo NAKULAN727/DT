@@ -10,7 +10,7 @@ const TouristSchema = new mongoose.Schema({
   passport: { type: String },
   govId: { type: String },
   phone: { type: String },
-  email: { type: String },
+  email: { type: String, required: true, unique: true },
   address: { type: String },
 
   // Section 2: TRIP
@@ -47,7 +47,7 @@ const TouristSchema = new mongoose.Schema({
     age: Number
   }],
 
-  blockchainId: { type: String, required: true, unique: true },
+  blockchainId: { type: String, required: true, unique: true, index: true },
   createdAt: { type: Date, default: Date.now }
 });
 

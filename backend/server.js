@@ -11,9 +11,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Connect to MongoDB
+// Connect to MongoDB with Performance Optimization
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/smartTourism";
-mongoose.connect(MONGO_URI)
+mongoose.connect(MONGO_URI, {
+  serverSelectionTimeoutMS: 5000, 
+  maxPoolSize: 10,
+})
   .then(() => console.log('MongoDB Connected to smartTourism'))
   .catch(err => console.error('MongoDB connection error:', err));
 
