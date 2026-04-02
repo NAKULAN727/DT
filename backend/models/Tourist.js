@@ -48,6 +48,11 @@ const TouristSchema = new mongoose.Schema({
   }],
 
   blockchainId: { type: String, required: true, unique: true },
+  sosHistory: [{
+    location: String,
+    timestamp: Date,
+    networkType: String
+  }],
   createdAt: { type: Date, default: Date.now }
 });
 

@@ -411,3 +411,63 @@ body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+/* ── Offline Banner ── */
+.offline-banner {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: linear-gradient(90deg, rgba(239,68,68,0.97), rgba(185,28,28,0.97));
+  backdrop-filter: blur(10px);
+  color: white;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(239,68,68,0.4);
+  animation: slideDown 0.4s ease;
+}
+
+/* ── Sync Toast ── */
+.sync-toast {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: rgba(16,185,129,0.97);
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: 30px;
+  box-shadow: 0 4px 20px rgba(16,185,129,0.4);
+  animation: fadeInUp 0.4s ease;
+  white-space: nowrap;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-100%); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { transform: translateX(-50%) translateY(10px); opacity: 0; }
+  to   { transform: translateX(-50%) translateY(0);    opacity: 1; }
+}
+
+/* animate-spin utility for RefreshCw icon */
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
