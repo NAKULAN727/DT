@@ -47,7 +47,12 @@ const TouristSchema = new mongoose.Schema({
     age: Number
   }],
 
-  blockchainId: { type: String, required: true, unique: true, index: true },
+  blockchainId: { type: String, required: true, unique: true },
+  sosHistory: [{
+    location: String,
+    timestamp: Date,
+    networkType: String
+  }],
   createdAt: { type: Date, default: Date.now }
 });
 

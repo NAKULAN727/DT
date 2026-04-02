@@ -12,15 +12,24 @@ const Field = ({ label, icon: Icon, type = "text", placeholder, value, onChange,
     <div className="relative group">
       {Icon && <Icon className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 transition-colors" size={14} />}
       {options ? (
+<<<<<<< HEAD
         <select 
           value={value} 
+=======
+        <select
+          value={value}
+>>>>>>> 4481d114e42b779d15f55416827fe1576cfb0def
           onChange={onChange}
           className="w-full bg-slate-900/40 border border-slate-700/50 rounded-xl py-2.5 px-4 pl-9 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all outline-none appearance-none"
         >
           {options.map(opt => <option key={opt}>{opt}</option>)}
         </select>
       ) : (
+<<<<<<< HEAD
         <input 
+=======
+        <input
+>>>>>>> 4481d114e42b779d15f55416827fe1576cfb0def
           type={type}
           value={value}
           onChange={onChange}
@@ -37,7 +46,9 @@ export default function Auth({ onLogin }) {
   const [regData, setRegData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [step, setStep] = useState(1); // For multi-step form if needed, but we'll stick to a smooth scroll view
+  const [loginError, setLoginError] = useState('');
+  const [regError, setRegError] = useState('');
+  const [step, setStep] = useState(1);
   
   // Section-based Form State
   const [formData, setFormData] = useState({
@@ -85,6 +96,8 @@ export default function Auth({ onLogin }) {
 
   const handleSwitchView = (newView) => {
     setCopied(false);
+    setLoginError('');
+    setRegError('');
     gsap.to('.anim-container', { opacity: 0, y: 10, duration: 0.3, ease: 'power2.in', onComplete: () => {
       setView(newView);
       window.scrollTo(0,0);
@@ -101,11 +114,16 @@ export default function Auth({ onLogin }) {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoginError('');
     setLoading(true);
+<<<<<<< HEAD
     const blockchainId = e.target.blockchainId.value;
+=======
+    const loginId = e.target.elements.loginId.value.trim();
+>>>>>>> 4481d114e42b779d15f55416827fe1576cfb0def
     
     try {
-      const response = await fetch('http://localhost:5000/api/login', {
+      const response = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ blockchainId })
@@ -115,10 +133,10 @@ export default function Auth({ onLogin }) {
         localStorage.setItem('safeSphereUser', JSON.stringify(data.user));
         gsap.to('.anim-container', { opacity: 0, scale: 1.05, duration: 0.5, onComplete: () => onLogin() });
       } else {
-        alert(data.error || 'Login failed');
+        setLoginError(data.error || 'User not found. Check your Blockchain ID.');
       }
     } catch (err) {
-      alert('Backend connection failed.');
+      setLoginError('Cannot reach server. Make sure the backend is running.');
     } finally {
       setLoading(false);
     }
@@ -126,10 +144,11 @@ export default function Auth({ onLogin }) {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setRegError('');
     setLoading(true);
     
     try {
-      const response = await fetch('http://localhost:5000/api/register-tourist', {
+      const response = await fetch('/api/register-tourist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
@@ -137,12 +156,15 @@ export default function Auth({ onLogin }) {
       const data = await response.json();
       if (data.success) {
         setRegData(data);
-        handleSwitchView('qrcodes');
+        gsap.to('.anim-container', { opacity: 0, y: 10, duration: 0.3, ease: 'power2.in', onComplete: () => {
+          setView('qrcodes');
+          window.scrollTo(0, 0);
+        }});
       } else {
-        alert(data.error || 'Registration failed');
+        setRegError(data.error || 'Registration failed. Please try again.');
       }
     } catch (err) {
-      alert('Backend connection failed.');
+      setRegError('Cannot reach server. Make sure the backend is running.');
     } finally {
       setLoading(false);
     }
@@ -174,17 +196,35 @@ export default function Auth({ onLogin }) {
                     <div className="space-y-1.5">
                       <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-1">Blockchain Public ID</label>
                       <div className="relative group">
+<<<<<<< HEAD
                         <Fingerprint className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 transition-colors" size={14} />
                         <input name="blockchainId" type="text" required placeholder="0x..." className="w-full bg-slate-900/40 border border-slate-700/50 rounded-xl py-2.5 px-4 pl-9 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all outline-none" />
+=======
+                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 transition-colors" size={14} />
+                        <input
+                          id="loginId"
+                          name="loginId"
+                          type="text"
+                          placeholder="0x..."
+                          required
+                          className="w-full bg-slate-900/40 border border-slate-700/50 rounded-xl py-2.5 px-4 pl-9 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all outline-none placeholder:text-slate-600"
+                        />
+>>>>>>> 4481d114e42b779d15f55416827fe1576cfb0def
                       </div>
                     </div>
                   </div>
+                  {loginError && (
+                    <div className="flex items-center gap-2 p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-xs font-medium">
+                      <AlertTriangle size={14} className="shrink-0" />
+                      {loginError}
+                    </div>
+                  )}
                   <button 
                     disabled={loading} 
                     type="submit" 
-                    className="w-full py-4 bg-white text-black hover:bg-blue-400 hover:text-white rounded-2xl font-bold transition-all transform hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2"
+                    className="w-full py-4 bg-white text-black hover:bg-blue-400 hover:text-white rounded-2xl font-bold transition-all transform hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
                   >
-                    {loading ? <Users className="animate-spin" size={20} /> : "Authenticate Securely"}
+                    {loading ? <><Users className="animate-spin" size={20} /> Verifying...</> : "Authenticate Securely"}
                   </button>
                   <div className="text-center pt-6">
                     <button type="button" onClick={() => handleSwitchView('register')} className="group text-slate-400 hover:text-white transition-all text-xs font-semibold uppercase tracking-widest flex items-center justify-center gap-2 mx-auto">
@@ -278,9 +318,16 @@ export default function Auth({ onLogin }) {
                   )}
                 </div>
 
+                {regError && (
+                  <div className="flex items-center gap-2 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl text-red-400 text-xs font-medium">
+                    <AlertTriangle size={14} className="shrink-0" />
+                    {regError}
+                    <button type="button" onClick={() => setRegError('')} className="ml-auto text-red-400/60 hover:text-red-400">✕</button>
+                  </div>
+                )}
                 <div className="flex flex-col md:flex-row gap-6 pb-6">
                    <button type="button" onClick={() => handleSwitchView('login')} className="flex-1 py-5 rounded-2xl bg-slate-800 text-slate-300 font-black uppercase tracking-widest text-xs hover:bg-slate-700 transition-all">Cancel</button>
-                   <button type="submit" disabled={loading} className="flex-[3] py-5 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-700 text-white font-black uppercase tracking-widest text-xs shadow-2xl shadow-blue-600/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                   <button type="submit" disabled={loading} className="flex-[3] py-5 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-700 text-white font-black uppercase tracking-widest text-xs shadow-2xl shadow-blue-600/30 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-60 disabled:cursor-not-allowed">
                      {loading ? <span className="flex items-center justify-center gap-3"><Users className="animate-spin"/> Syncing with Chain...</span> : "Generate Cryptographic Identity"}
                    </button>
                 </div>
